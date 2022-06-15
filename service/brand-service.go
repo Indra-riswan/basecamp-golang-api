@@ -11,8 +11,8 @@ import (
 
 type BrandService interface {
 	CreateBrand(brand dto.BrandDto) entity.Brand
-	UpdateBrand(brandid uint, brand dto.BrandDto) entity.Brand
-	DeleteBrand(ID uint)
+	UpdateBrand(brandid uint, brand dto.BrandDtoUpdate) entity.Brand
+	DeleteBrand(ID uint) entity.Brand
 	FindBrand(ID uint) entity.Brand
 	AllBrand() []entity.Brand
 	TransaksiBrand(ID uint) entity.Brand
@@ -37,7 +37,7 @@ func (s *brandservice) CreateBrand(brand dto.BrandDto) entity.Brand {
 	return brands
 }
 
-func (s *brandservice) UpdateBrand(brandid uint, brand dto.BrandDto) entity.Brand {
+func (s *brandservice) UpdateBrand(brandid uint, brand dto.BrandDtoUpdate) entity.Brand {
 	brands := s.repository.FindBrand(brandid)
 	err := smapping.FillStruct(&brands, smapping.MapFields(&brand))
 	if err != nil {
@@ -48,9 +48,10 @@ func (s *brandservice) UpdateBrand(brandid uint, brand dto.BrandDto) entity.Bran
 	return brands
 }
 
-func (s *brandservice) DeleteBrand(ID uint) {
+func (s *brandservice) DeleteBrand(ID uint) entity.Brand {
 	brands := s.repository.FindBrand(ID)
 	s.repository.DeleteBrand(brands)
+	return brands
 }
 
 func (s *brandservice) FindBrand(ID uint) entity.Brand {

@@ -12,7 +12,7 @@ import (
 type TransaksiService interface {
 	CreateTransaksi(transaksi dto.TransaksiDto) entity.Transaksi
 	UpdateTransaksi(ID uint, transaksi dto.TransaksiDtoUpdate) entity.Transaksi
-	DeleteTransaksi(transaksiid uint)
+	DeleteTransaksi(transaksiid uint) entity.Transaksi
 	FindTransaksi(ID uint) entity.Transaksi
 	AllTransaksi() []entity.Transaksi
 }
@@ -49,9 +49,10 @@ func (s *transaksiservice) UpdateTransaksi(ID uint, transaksi dto.TransaksiDtoUp
 
 }
 
-func (s *transaksiservice) DeleteTransaksi(transaksiid uint) {
+func (s *transaksiservice) DeleteTransaksi(transaksiid uint) entity.Transaksi {
 	transaksi := s.repository.FindTransaksi(transaksiid)
 	s.repository.DeleteTransaksi(transaksi)
+	return transaksi
 }
 
 func (s *transaksiservice) FindTransaksi(ID uint) entity.Transaksi {

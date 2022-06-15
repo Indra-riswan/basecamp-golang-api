@@ -8,7 +8,7 @@ import (
 type TransaksiRepo interface {
 	CreateTransaksi(transaksi entity.Transaksi) entity.Transaksi
 	UpdateTransaksi(transaksi entity.Transaksi) entity.Transaksi
-	DeleteTransaksi(transaksi entity.Transaksi)
+	DeleteTransaksi(transaksi entity.Transaksi) entity.Transaksi
 	FindTransaksi(ID uint) entity.Transaksi
 	AllTransaksi() []entity.Transaksi
 }
@@ -31,8 +31,9 @@ func (r *transaksirepo) UpdateTransaksi(transaksi entity.Transaksi) entity.Trans
 	return transaksi
 }
 
-func (r *transaksirepo) DeleteTransaksi(transaksi entity.Transaksi) {
+func (r *transaksirepo) DeleteTransaksi(transaksi entity.Transaksi) entity.Transaksi {
 	r.db.Delete(&transaksi)
+	return transaksi
 }
 
 func (r *transaksirepo) FindTransaksi(ID uint) entity.Transaksi {

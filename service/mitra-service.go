@@ -12,7 +12,7 @@ import (
 type MitraService interface {
 	CreateMitra(mitra dto.MitraDto) entity.Mitra
 	UpdateMitra(mitraid uint, mitra dto.MitraDtoUpdate) entity.Mitra
-	DeleteMitra(mitraid uint)
+	DeleteMitra(mitraid uint) entity.Mitra
 	FindMitra(mitraid uint) entity.Mitra
 	AllMitra() []entity.Mitra
 	TransaksiMitra(mitraid uint) entity.Mitra
@@ -48,8 +48,9 @@ func (s *mitraservice) UpdateMitra(mitraid uint, mitra dto.MitraDtoUpdate) entit
 	return mit
 }
 
-func (s *mitraservice) DeleteMitra(mitraid uint) {
-	s.repository.FindMitra(mitraid)
+func (s *mitraservice) DeleteMitra(mitraid uint) entity.Mitra {
+	return s.repository.FindMitra(mitraid)
+
 }
 
 func (s *mitraservice) FindMitra(mitraid uint) entity.Mitra {
