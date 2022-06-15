@@ -29,6 +29,8 @@ func (h *transaksihandler) Create(ctx *gin.Context) {
 
 	total := transaksidto.Perhari * transaksidto.Day
 	totalop := transaksidto.Op * transaksidto.Day
+	transaksidto.Total = total
+	transaksidto.TotalOp = totalop
 	transaksidto.SisaProfit = total - totalop
 
 	res := h.service.CreateTransaksi(transaksidto)

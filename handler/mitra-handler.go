@@ -68,7 +68,7 @@ func (h *mitrahandler) All(ctx *gin.Context) {
 
 func (h *mitrahandler) Transaksi(ctx *gin.Context) {
 	id, _ := strconv.Atoi(ctx.Param("id"))
-	res := h.service.FindMitra(uint(id))
+	res := h.service.TransaksiMitra(uint(id))
 	result := helper.Succesresponse(true, "Ok!", res)
 	ctx.JSON(200, result)
 }

@@ -62,6 +62,6 @@ func (s *mitraservice) AllMitra() []entity.Mitra {
 }
 
 func (s *mitraservice) TransaksiMitra(mitraid uint) entity.Mitra {
-	mit := s.repository.FindMitra(mitraid)
+	mit := s.repository.TransaksiMitra(mitraid)
 	return mit
 }

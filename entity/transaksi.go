@@ -5,7 +5,7 @@ import "time"
 type Transaksi struct {
 	ID         uint   `gorm:"type:int;primaryKey;autoIncrement" json:"id"`
 	Brand      string `gorm:"type:char(50)" json:"brand"`
-	Mitra      string `gorm:"type:char(20)" json:"mitra"`
+	Mitra      string `gorm:"type:char(50)" json:"mitra"`
 	Unit       string `gorm:"type:char(20)" json:"unit"`
 	Nopol      string `gorm:"type:char(50)" json:"nopol"`
 	User       string `gorm:"type:char(50)" json:"user"`

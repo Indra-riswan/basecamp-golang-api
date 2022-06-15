@@ -2,7 +2,9 @@ package dto
 
 type TransaksiDto struct {
 	Brand      string `json:"brand" form:"brand" binding:"required"`
-	Nopolunit  string `json:"nopolunit" form:"nopolunit" binding:"required"`
+	Mitra      string `json:"mitra" form:"mitra" binding:"required"`
+	Unit       string `json:"unit" form:"unit" binding:"required"`
+	Nopol      string `json:"nopol" form:"nopol" binding:"required"`
 	User       string `json:"user" form:"user" binding:"required"`
 	Checker    string `json:"checker" form:"checker" binding:"required"`
 	Status     string `json:"status" form:"status" binding:"required"`
@@ -19,7 +21,9 @@ type TransaksiDto struct {
 
 type TransaksiDtoUpdate struct {
 	Brand      string `json:"brand" form:"brand" binding:"required"`
-	Nopolunit  string `json:"nopolunit" form:"nopolunit" binding:"required"`
+	Mitra      string `json:"mitra" form:"mitra" binding:"required"`
+	Unit       string `json:"unit" form:"unit" binding:"required"`
+	Nopol      string `json:"nopol" form:"nopol" binding:"required"`
 	User       string `json:"user" form:"user" binding:"required"`
 	Checker    string `json:"checker" form:"checker" binding:"required"`
 	Status     string `json:"status" form:"status" binding:"required"`

@@ -11,10 +11,10 @@ import (
 )
 
 var (
-	sql              *gorm.DB = config.Connectionsql()
-	transaksirepo             = repository.NewTransaksiRepo(sql)
-	brandrepo                 = repository.NewBrandRepo(sql)
-	mitrarepo                 = repository.NewMitraRepo(sql)
+	db               *gorm.DB = config.Connectionsql()
+	transaksirepo             = repository.NewTransaksiRepo(db)
+	brandrepo                 = repository.NewBrandRepo(db)
+	mitrarepo                 = repository.NewMitraRepo(db)
 	transaksiservice          = service.NewTransaksiService(transaksirepo)
 	brandservice              = service.NewBrandService(brandrepo)
 	mitraservice              = service.NewMitraService(mitrarepo)
@@ -24,8 +24,8 @@ var (
 )
 
 func main() {
-	defer config.Closeconnectionsql(sql)
-	sql.AutoMigrate(&entity.Transaksi{}, &entity.Brand{}, &entity.Mitra{})
+	defer config.Closeconnectionsql(db)
+	db.AutoMigrate(&entity.Mitra{}, &entity.Brand{}, &entity.Transaksi{})
 
 	r := gin.Default()
 
