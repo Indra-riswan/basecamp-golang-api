@@ -49,8 +49,9 @@ func (s *mitraservice) UpdateMitra(mitraid uint, mitra dto.MitraDtoUpdate) entit
 }
 
 func (s *mitraservice) DeleteMitra(mitraid uint) entity.Mitra {
-	return s.repository.FindMitra(mitraid)
-
+	mitra := s.repository.FindMitra(mitraid)
+	s.repository.DeleteMitra(mitra)
+	return mitra
 }
 
 func (s *mitraservice) FindMitra(mitraid uint) entity.Mitra {

@@ -48,7 +48,7 @@ func (h *mitrahandler) Update(ctx *gin.Context) {
 
 func (h *mitrahandler) Delete(ctx *gin.Context) {
 	id, _ := strconv.Atoi(ctx.Param("id"))
-	res := h.service.FindMitra(uint(id))
+	res := h.service.DeleteMitra(uint(id))
 	result := helper.Succesresponse(true, "Succesed Delete!", res)
 	ctx.JSON(200, result)
 }

@@ -15,12 +15,15 @@ var (
 	transaksirepo             = repository.NewTransaksiRepo(db)
 	brandrepo                 = repository.NewBrandRepo(db)
 	mitrarepo                 = repository.NewMitraRepo(db)
+	mobilrepo                 = repository.NewMobilRepo(db)
 	transaksiservice          = service.NewTransaksiService(transaksirepo)
 	brandservice              = service.NewBrandService(brandrepo)
 	mitraservice              = service.NewMitraService(mitrarepo)
+	mobilservice              = service.NewMobilService(mobilrepo)
 	transaksihandler          = handler.NewTransaksiHandler(transaksiservice)
 	brandhandler              = handler.NewBrandHandler(brandservice)
 	mitrahandler              = handler.NewMitraHandler(mitraservice)
+	mobilhandler              = handler.NewMobilHandler(mobilservice)
 )
 
 func main() {
@@ -56,6 +59,14 @@ func main() {
 		mitra.GET("/all", mitrahandler.All)
 		mitra.GET("/id/:id", mitrahandler.Find)
 		mitra.GET("/penjualan/:id", mitrahandler.Transaksi)
+	}
+
+	mobil := r.Group("mobil")
+	{
+		mobil.POST("/create", mobilhandler.Create)
+		mobil.PUT("/update/:id", mobilhandler.Update)
+		mobil.GET("/allmobil", mobilhandler.AllMobil)
+		mobil.DELETE("/delete/:id", mobilhandler.DeleteMobil)
 	}
 
 	r.Run()
