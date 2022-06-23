@@ -28,7 +28,7 @@ var (
 
 func main() {
 	defer config.Closeconnectionsql(db)
-	db.AutoMigrate(&entity.Mitra{}, &entity.Brand{}, &entity.Transaksi{})
+	db.AutoMigrate(&entity.Mitra{}, &entity.Brand{}, &entity.Transaksi{}, &entity.Mobil{})
 
 	r := gin.Default()
 
