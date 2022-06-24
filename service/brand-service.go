@@ -1,12 +1,14 @@
 package service
 
 import (
+	"fmt"
 	"log"
 
 	"github.com/Indra-riswan/basecamp-golang-api/dto"
 	"github.com/Indra-riswan/basecamp-golang-api/entity"
 	"github.com/Indra-riswan/basecamp-golang-api/repository"
 	"github.com/mashingan/smapping"
+	"golang.org/x/crypto/bcrypt"
 )
 
 type BrandService interface {
@@ -16,6 +18,8 @@ type BrandService interface {
 	FindBrand(ID uint) entity.Brand
 	AllBrand() []entity.Brand
 	TransaksiBrand(ID uint) entity.Brand
+	VerifiCredential(nama, passwd string) interface{}
+	Isduplicate(nama string) bool
 }
 
 type brandservice struct {
@@ -64,4 +68,33 @@ func (s *brandservice) AllBrand() []entity.Brand {
 
 func (s *brandservice) TransaksiBrand(ID uint) entity.Brand {
 	return s.repository.TransaksiBrand(ID)
+}
+
+func ComparePasswd(pass, plainpass []byte) bool {
+	psswd := []byte(pass)
+	err := bcrypt.CompareHashAndPassword(psswd, plainpass)
+	if err != nil {
+		fmt.Println("Failed to Compare :", err.Error())
+		return false
+	}
+	return true
+}
+
+func (s *brandservice) VerifiCredential(nama, passwd string) interface{} {
+	res := s.repository.VerifyCredential(nama, passwd)
+	if v, ok := res.(entity.Brand); ok {
+		compare := ComparePasswd([]byte(v.Password), []byte(passwd))
+		if v.Nama == nama && compare {
+			return res
+		}
+		return false
+	}
+	return false
+
+}
+
+func (s *brandservice) Isduplicate(nama string) bool {
+	res := s.repository.Isduplicate(nama)
+	return res.Error != nil
+
 }

@@ -49,6 +49,7 @@ func main() {
 		brand.DELETE("/delete/:id", brandhandler.Delete)
 		brand.GET("/id/:id", brandhandler.Find)
 		brand.GET("/penjualan/:id", brandhandler.Transaksi)
+		brand.POST("/login", brandhandler.Login)
 	}
 
 	mitra := r.Group("mitra")

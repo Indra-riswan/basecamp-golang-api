@@ -19,6 +19,25 @@ func NewBrandHandler(service service.BrandService) *brandhandler {
 	return &brandhandler{service}
 }
 
+func (h *brandhandler) Login(ctx *gin.Context) {
+	var brand dto.BrandDtoLogin
+	err := ctx.ShouldBindJSON(&brand)
+	if err != nil {
+		res := helper.Errorsresponse("Failed Login", err.Error(), helper.Emptyobj{})
+		ctx.AbortWithStatusJSON(http.StatusBadRequest, res)
+	}
+
+	auth := h.service.VerifiCredential(brand.Nama, brand.Password)
+	if v, ok := auth.(entity.Brand); ok {
+		res := helper.Succesresponse(true, "Ok!", v)
+		ctx.JSON(200, res)
+		return
+	}
+
+	res := helper.Errorsresponse("Denied", "Please Check Email Or Password", helper.Emptyobj{})
+	ctx.AbortWithStatusJSON(http.StatusConflict, res)
+}
+
 func (h *brandhandler) Create(ctx *gin.Context) {
 	var brand dto.BrandDto
 	err := ctx.ShouldBindJSON(&brand)
@@ -26,9 +45,15 @@ func (h *brandhandler) Create(ctx *gin.Context) {
 		res := helper.Errorsresponse("Failed Create New Brand", err.Error(), helper.Emptyobj{})
 		ctx.JSON(http.StatusBadRequest, res)
 	}
-	res := h.service.CreateBrand(brand)
-	result := helper.Succesresponse(true, "Ok!", res)
-	ctx.JSON(200, result)
+	if !h.service.Isduplicate(brand.Nama) {
+		res := helper.Errorsresponse("Failed to Create", "Brand Already Exist", helper.Emptyobj{})
+		ctx.AbortWithStatusJSON(http.StatusConflict, res)
+	} else {
+		res := h.service.CreateBrand(brand)
+		result := helper.Succesresponse(true, "Ok!", res)
+		ctx.JSON(200, result)
+	}
+
 }
 
 func (h *brandhandler) Update(ctx *gin.Context) {
