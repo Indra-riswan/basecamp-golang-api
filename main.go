@@ -60,6 +60,7 @@ func main() {
 		mitra.GET("/all", mitrahandler.All)
 		mitra.GET("/id/:id", mitrahandler.Find)
 		mitra.GET("/penjualan/:id", mitrahandler.Transaksi)
+		mitra.POST("/login", mitrahandler.Login)
 	}
 
 	mobil := r.Group("mobil")

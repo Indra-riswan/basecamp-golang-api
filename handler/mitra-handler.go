@@ -19,6 +19,24 @@ func NewMitraHandler(service service.MitraService) *mitrahandler {
 	return &mitrahandler{service}
 }
 
+func (h *mitrahandler) Login(ctx *gin.Context) {
+	var Mitra dto.MitraDtoLogin
+	err := ctx.ShouldBindJSON(&Mitra)
+	if err != nil {
+		res := helper.Errorsresponse("Failed Login", err.Error(), helper.Emptyobj{})
+		ctx.AbortWithStatusJSON(http.StatusBadRequest, res)
+	}
+
+	auth := h.service.VerifyMitra(Mitra.Nama, Mitra.Password)
+	if v, ok := auth.(entity.Mitra); ok {
+		res := helper.Succesresponse(true, "Ok!", v)
+		ctx.JSON(200, res)
+	} else {
+		res := helper.Errorsresponse("Failed Login", "Please check Email Or Password", helper.Emptyobj{})
+		ctx.AbortWithStatusJSON(http.StatusConflict, res)
+	}
+}
+
 func (h *mitrahandler) Create(ctx *gin.Context) {
 	var mitra dto.MitraDto
 	err := ctx.ShouldBindJSON(&mitra)
@@ -26,10 +44,14 @@ func (h *mitrahandler) Create(ctx *gin.Context) {
 		res := helper.Errorsresponse("Failed Create Mitra", err.Error(), helper.Emptyobj{})
 		ctx.AbortWithStatusJSON(http.StatusBadRequest, res)
 	}
-
-	res := h.service.CreateMitra(mitra)
-	result := helper.Succesresponse(true, "Ok!", res)
-	ctx.JSON(200, result)
+	if !h.service.Duplicatemitra(mitra.Nama) {
+		res := helper.Errorsresponse("Failed to Create", "Brand Already Exist", helper.Emptyobj{})
+		ctx.AbortWithStatusJSON(http.StatusConflict, res)
+	} else {
+		res := h.service.CreateMitra(mitra)
+		result := helper.Succesresponse(true, "Ok!", res)
+		ctx.JSON(http.StatusCreated, result)
+	}
 }
 
 func (h *mitrahandler) Update(ctx *gin.Context) {

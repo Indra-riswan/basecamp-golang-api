@@ -16,6 +16,8 @@ type MitraService interface {
 	FindMitra(mitraid uint) entity.Mitra
 	AllMitra() []entity.Mitra
 	TransaksiMitra(mitraid uint) entity.Mitra
+	VerifyMitra(nama, password string) interface{}
+	Duplicatemitra(nama string) bool
 }
 
 type mitraservice struct {
@@ -65,4 +67,21 @@ func (s *mitraservice) AllMitra() []entity.Mitra {
 func (s *mitraservice) TransaksiMitra(mitraid uint) entity.Mitra {
 	mit := s.repository.TransaksiMitra(mitraid)
 	return mit
+}
+
+func (s *mitraservice) VerifyMitra(nama, password string) interface{} {
+	res := s.repository.VerifyMitra(nama, password)
+	if v, ok := res.(entity.Mitra); ok {
+		compare := ComparePasswd([]byte(v.Password), []byte(password))
+		if v.Nama == nama && compare {
+			return res
+		}
+		return false
+	}
+	return false
+}
+
+func (s *mitraservice) Duplicatemitra(nama string) bool {
+	res := s.repository.Duplicatemitra(nama)
+	return res.Error != nil
 }
